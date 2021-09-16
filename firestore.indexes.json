@@ -1,0 +1,159 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "campaigns",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "automatedStart",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "campaignStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "campaignStart",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "campaigns",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "automatedStop",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "campaignStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "campaignFinish",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "campaigns",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "delInd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hasCampaign",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "storeAltCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "storeCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hasCampaign",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "storeCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "storeAltCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "storeCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "storeCategory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "storeCategory",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "campaignStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "markers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "storeCategory",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "position.geohash",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
