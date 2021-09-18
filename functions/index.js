@@ -18,8 +18,8 @@ exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
                 valueCamp.docs.forEach(async (campaign) => {
                     await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'active', 'automatedStart', true);
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'active');
-                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                    await db.doc('users/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().token, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
@@ -45,8 +45,8 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
                 valueCamp.docs.forEach(async (campaign) => {
                     await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'inactive', 'automatedStop', true);
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'inactive');
-                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                    await db.doc('users/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().token, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
                                 body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
@@ -72,8 +72,8 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
                 valueCamp.docs.forEach(async (campaign) => {
                     await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'active', 'automatedStart', true);
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'active');
-                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                    await db.doc('users/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().token, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
@@ -98,11 +98,11 @@ exports.campaignStopJob = functions.pubsub.schedule('* * * * *').onRun(async (co
                 valueCamp.docs.forEach(async (campaign) => {
                     await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'inactive', 'automatedStop', true);
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'inactive');
-                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                    await db.doc('users/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().token, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
-                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı !',
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
                                 sound: 'bulb.mp3'
                             }
                         })
@@ -167,32 +167,38 @@ exports.reservationUpdate = functions.firestore.document('reservations/{reservat
     var userId = undefined
     var title = undefined
     var body = undefined
+    var sendNotif = false
 
     var reservation = await db.doc('reservations/' + reservationId).get()
 
     if (reservation.data().reservationStatus == 'canceled') {
+        sendNotif = true
         userId = reservation.data().reservationStore
         title = 'Bir rezervasyon iptal edildi !'
         body = reservation.data().reservationName + ' isimli müşteriniz rezervasyonunu iptal etmiştir !'
     }
     else if (reservation.data().reservationStatus == 'approved') {
+        sendNotif = true
         userId = reservation.data().reservationStore
         title = 'Rezervasyonunuz onaylandı !'
         body = reservation.data().reservationStoreName + ' işletmesine ait rezervasyonunuz onaylanmıştır !'
     }
     else if (reservation.data().reservationStatus == 'rejected') {
+        sendNotif = true
         userId = reservation.data().reservationStore
         title = 'Rezervasyonunuz reddedildi !'
         body = reservation.data().reservationStoreName + ' işletmesine ait rezervasyonunuz iptal edilmiştir !'
     }
 
-    await db.doc('users/' + userId).get().then(async (user) => {
-        await admin.messaging().sendToDevice(user.data().token, {
-            notification: {
-                title: title,
-                body: body,
-                sound: 'bulb.mp3'
-            }
+    if(sendNotif == true) {
+        await db.doc('users/' + userId).get().then(async (user) => {
+            await admin.messaging().sendToDevice(user.data().token, {
+                notification: {
+                    title: title,
+                    body: body,
+                    sound: 'bulb.mp3'
+                }
+            })
         })
-    })
+    }
 });
