@@ -23,7 +23,6 @@ exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
-                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -50,7 +49,6 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
                                 body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
-                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -77,7 +75,6 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
                             notification: {
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
-                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -103,7 +100,6 @@ exports.campaignStopJob = functions.pubsub.schedule('* * * * *').onRun(async (co
                             notification: {
                                 title: "Kampanyanız sona erdi !",
                                 body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
-                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -123,7 +119,6 @@ exports.commentCreate = functions.firestore.document('wishes/{wishId}').onCreate
             notification: {
                 title: "Yeni Dilek & Şikayet Geldi !",
                 body: "Müşterilerinizden gelen dilek ve şikayetler, işletmeniz için çok önemlidir.",
-                sound: "bulb.mp3"
             }
         })
     })
@@ -139,7 +134,6 @@ exports.campaignCreate = functions.firestore.document('stores/{storeId}/campaign
                 notification: {
                     title: 'Yeni Kampanya Yayınlandı !',
                     body: "Favori mekanlarınızdan " + store.data().storeName + ' yeni bir kampanya yayınladı bakmayı unutmayın !',
-                    sound: 'bulb.mp3'
                 }
             });
         })
@@ -156,7 +150,6 @@ exports.reservationCreate = functions.firestore.document('reservations/{reservat
             notification: {
                 title: "Yeni Rezervasyon Talebi Geldi !",
                 body: 'Yeni gelen bu rezervasyon talebini onaylamalı veya reddetmelisiniz !',
-                sound: 'bulb.mp3'
             }
         })
     })
@@ -196,7 +189,6 @@ exports.reservationUpdate = functions.firestore.document('reservations/{reservat
                 notification: {
                     title: title,
                     body: body,
-                    sound: 'bulb.mp3'
                 }
             })
         })
