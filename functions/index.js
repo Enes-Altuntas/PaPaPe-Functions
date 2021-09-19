@@ -72,6 +72,9 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'active');
                     await db.doc('users/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().token, {
+                            data: {
+                                route: "campaigns"
+                            },
                             notification: {
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
@@ -97,6 +100,9 @@ exports.campaignStopJob = functions.pubsub.schedule('* * * * *').onRun(async (co
                     await db.doc('markers/' + doc.id).update('campaignStatus', 'inactive');
                     await db.doc('users/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().token, {
+                            data: {
+                                route: "campaigns"
+                            },
                             notification: {
                                 title: "Kampanyanız sona erdi !",
                                 body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
@@ -116,6 +122,9 @@ exports.commentCreate = functions.firestore.document('wishes/{wishId}').onCreate
 
     await db.doc('users/' + wish.data().wishStore).get().then(async (user) => {
         await admin.messaging().sendToDevice(user.data().token, {
+            data: {
+                route: "wishes"
+            },
             notification: {
                 title: "Yeni Dilek & Şikayet Geldi !",
                 body: "Müşterilerinizden gelen dilek ve şikayetler, işletmeniz için çok önemlidir.",
@@ -131,6 +140,10 @@ exports.campaignCreate = functions.firestore.document('stores/{storeId}/campaign
     await db.collection('users').where('favorites', "array-contains", storeId).get().then(async (users) => {
         users.forEach(async (user) => {
             await admin.messaging().sendToDevice(user.data().token, {
+                data: {
+                    route: "store",
+                    storeId: storeId
+                },
                 notification: {
                     title: 'Yeni Kampanya Yayınlandı !',
                     body: "Favori mekanlarınızdan " + store.data().storeName + ' yeni bir kampanya yayınladı bakmayı unutmayın !',
@@ -147,6 +160,9 @@ exports.reservationCreate = functions.firestore.document('reservations/{reservat
 
     await db.doc('users/' + reservation.data().reservationStore).get().then(async (user) => {
         await admin.messaging().sendToDevice(user.data().token, {
+            data: {
+                route: "reservations",
+            },
             notification: {
                 title: "Yeni Rezervasyon Talebi Geldi !",
                 body: 'Yeni gelen bu rezervasyon talebini onaylamalı veya reddetmelisiniz !',
@@ -172,20 +188,23 @@ exports.reservationUpdate = functions.firestore.document('reservations/{reservat
     }
     else if (reservation.data().reservationStatus == 'approved') {
         sendNotif = true
-        userId = reservation.data().reservationStore
+        userId = reservation.data().reservationUser
         title = 'Rezervasyonunuz onaylandı !'
         body = reservation.data().reservationStoreName + ' işletmesine ait rezervasyonunuz onaylanmıştır !'
     }
     else if (reservation.data().reservationStatus == 'rejected') {
         sendNotif = true
-        userId = reservation.data().reservationStore
+        userId = reservation.data().reservationUser
         title = 'Rezervasyonunuz reddedildi !'
         body = reservation.data().reservationStoreName + ' işletmesine ait rezervasyonunuz iptal edilmiştir !'
     }
 
-    if(sendNotif == true) {
+    if (sendNotif == true) {
         await db.doc('users/' + userId).get().then(async (user) => {
             await admin.messaging().sendToDevice(user.data().token, {
+                data: {
+                    route: "reservations",
+                },
                 notification: {
                     title: title,
                     body: body,
