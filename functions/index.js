@@ -76,6 +76,7 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
                                 route: "campaigns"
                             },
                             notification: {
+                                sound: 'bulb.mp3',
                                 title: "Kampanyanız başlıyor !",
                                 body: 'Hazır olun çünkü kampanyanız başlıyor !',
                             }
@@ -104,6 +105,7 @@ exports.campaignStopJob = functions.pubsub.schedule('* * * * *').onRun(async (co
                                 route: "campaigns"
                             },
                             notification: {
+                                sound: 'bulb.mp3',
                                 title: "Kampanyanız sona erdi !",
                                 body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
                             }
@@ -126,6 +128,7 @@ exports.commentCreate = functions.firestore.document('wishes/{wishId}').onCreate
                 route: "wishes"
             },
             notification: {
+                sound: 'bulb.mp3',
                 title: "Yeni Dilek & Şikayet Geldi !",
                 body: "Müşterilerinizden gelen dilek ve şikayetler, işletmeniz için çok önemlidir.",
             }
@@ -145,6 +148,7 @@ exports.campaignCreate = functions.firestore.document('stores/{storeId}/campaign
                     storeId: storeId
                 },
                 notification: {
+                    sound: 'bulb.mp3',
                     title: 'Yeni Kampanya Yayınlandı !',
                     body: "Favori mekanlarınızdan " + store.data().storeName + ' yeni bir kampanya yayınladı bakmayı unutmayın !',
                 }
@@ -164,6 +168,7 @@ exports.reservationCreate = functions.firestore.document('reservations/{reservat
                 route: "reservations",
             },
             notification: {
+                sound: 'bulb.mp3',
                 title: "Yeni Rezervasyon Talebi Geldi !",
                 body: 'Yeni gelen bu rezervasyon talebini onaylamalı veya reddetmelisiniz !',
             }
@@ -206,6 +211,7 @@ exports.reservationUpdate = functions.firestore.document('reservations/{reservat
                     route: "reservations",
                 },
                 notification: {
+                    sound: 'bulb.mp3',
                     title: title,
                     body: body,
                 }
